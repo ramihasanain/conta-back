@@ -9,7 +9,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import Document
 
-API_KEY = "AIzaSyB9qktaFJDGx6Qz_ytTKkmaUy1HWBIFT8o"
+API_KEY = os.getenv("GEMINI_API_KEY", "AIzaSyB9qktaFJDGx6Qz_ytTKkmaUy1HWBIFT8o")
 
 def get_gemini_prompt(company_name):
     return f"""
