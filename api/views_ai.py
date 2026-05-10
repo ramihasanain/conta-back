@@ -143,7 +143,7 @@ def upload_contract(request):
         }
         
         headers = {'Content-Type': 'application/json'}
-        r = requests.post(url, json=payload, headers=headers)
+        r = requests.post(url, json=payload, headers=headers, timeout=90)
         
         if r.status_code != 200:
             return Response({'detail': f'AI Processing failed: {r.text}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -211,7 +211,7 @@ def fossa_generate_contract(request):
         payload = {
             "contents": [{"parts": [{"text": instruction}]}]
         }
-        r = requests.post(url, json=payload, headers={'Content-Type': 'application/json'})
+        r = requests.post(url, json=payload, headers={'Content-Type': 'application/json'}, timeout=90)
         if r.status_code != 200:
             return Response({'error': f'AI Engine error: {r.text}'}, status=500)
             
@@ -250,7 +250,7 @@ def fossa_modify_text(request):
     try:
         url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={API_KEY}"
         payload = { "contents": [{"parts": [{"text": prompt}]}] }
-        r = requests.post(url, json=payload, headers={'Content-Type': 'application/json'})
+        r = requests.post(url, json=payload, headers={'Content-Type': 'application/json'}, timeout=90)
         result = r.json()['candidates'][0]['content']['parts'][0]['text'].strip()
         
         if result.startswith('```html'):
@@ -290,7 +290,7 @@ def fossa_chat(request):
     try:
         url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={API_KEY}"
         payload = { "contents": [{"parts": [{"text": prompt}]}] }
-        r = requests.post(url, json=payload, headers={'Content-Type': 'application/json'})
+        r = requests.post(url, json=payload, headers={'Content-Type': 'application/json'}, timeout=90)
         result = r.json()['candidates'][0]['content']['parts'][0]['text'].strip()
         return Response({'message': result})
     except Exception as e:
